@@ -6,23 +6,23 @@ var vfs = require('vinyl-fs');
 var watch = require('glob-watcher');
 var Crawler = require("crawler");
 var jsdom = require('jsdom');
-const Nightmare = require('nightmare')
+var Nightmare = require('nightmare')
 var cheerio=require("cheerio");
 var fs = require('fs');
 var r=require("request");
 
 
-const neo4j = require('neo4j-driver').v1;
+var neo4j = require('neo4j-driver').v1;
 var driver = neo4j.driver("bolt://localhost", neo4j.auth.basic("admin", "admin"));
 
-const session = driver.session();
+var session = driver.session();
 
 
 
  
 
 
-const nightmare = Nightmare({ show:false, maxAuthRetries: 3 })
+var nightmare = Nightmare({ show:false, maxAuthRetries: 3 })
 
 function Gulp() {
   Undertaker.call(this);
