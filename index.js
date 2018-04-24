@@ -6,23 +6,23 @@ var vfs = require('vinyl-fs');
 var watch = require('glob-watcher');
 var Crawler = require("crawler");
 var jsdom = require('jsdom');
-var Nightmare = require('nightmare')
+const Nightmare = require('nightmare')
 var cheerio=require("cheerio");
 var fs = require('fs');
 var r=require("request");
 
 
-var neo4j = require('neo4j-driver').v1;
+const neo4j = require('neo4j-driver').v1;
 var driver = neo4j.driver("bolt://localhost", neo4j.auth.basic("admin", "admin"));
 
-var session = driver.session();
+const session = driver.session();
 
 
 
  
 
 
-var nightmare = Nightmare({ show:false, maxAuthRetries: 3 })
+const nightmare = Nightmare({ show:false, maxAuthRetries: 3 })
 
 function Gulp() {
   Undertaker.call(this);
@@ -99,11 +99,11 @@ nightmare
 console.log($(".seo-important-title").attr('data-name'));
 console.log($(".introduction").text());
 
-var companyName = $(".seo-important-title").attr('data-name');
-var companyFullName = $(".seo-important-title").attr('data-fullname');
-var introduction = $(".introduction").text();
+const companyName = $(".seo-important-title").attr('data-name');
+const companyFullName = $(".seo-important-title").attr('data-fullname');
+const introduction = $(".introduction").text();
 
-var resultPromise = session.run(
+const resultPromise = session.run(
   'CREATE (a:Company {companyName: $companyName, companyFullName:$companyFullName,introduction:$introduction}) RETURN a',
   {companyName: companyName,companyFullName: companyFullName,introduction:introduction}
 );
@@ -111,8 +111,8 @@ var resultPromise = session.run(
 resultPromise.then(result => {
   session.close();
 
-  var singleRecord = result.records[0];
-  var node = singleRecord.get(0);
+  const singleRecord = result.records[0];
+  const node = singleRecord.get(0);
 
   console.log(node.properties.companyName);
  console.log(node.properties.companyFullName);
@@ -135,4 +135,3 @@ fs.writeFile("./sitelog/"+testurl+datestring+".txt",body , function(err) {
   .catch(error => {
     console.error('Search failed:', error)
   })
-
