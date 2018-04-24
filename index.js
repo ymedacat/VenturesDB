@@ -99,11 +99,11 @@ nightmare
 console.log($(".seo-important-title").attr('data-name'));
 console.log($(".introduction").text());
 
-const companyName = $(".seo-important-title").attr('data-name');
-const companyFullName = $(".seo-important-title").attr('data-fullname');
-const introduction = $(".introduction").text();
+var companyName = $(".seo-important-title").attr('data-name');
+var companyFullName = $(".seo-important-title").attr('data-fullname');
+var introduction = $(".introduction").text();
 
-const resultPromise = session.run(
+var resultPromise = session.run(
   'CREATE (a:Company {companyName: $companyName, companyFullName:$companyFullName,introduction:$introduction}) RETURN a',
   {companyName: companyName,companyFullName: companyFullName,introduction:introduction}
 );
@@ -111,8 +111,8 @@ const resultPromise = session.run(
 resultPromise.then(result => {
   session.close();
 
-  const singleRecord = result.records[0];
-  const node = singleRecord.get(0);
+  var singleRecord = result.records[0];
+  var node = singleRecord.get(0);
 
   console.log(node.properties.companyName);
  console.log(node.properties.companyFullName);
