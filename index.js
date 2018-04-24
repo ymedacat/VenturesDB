@@ -4,12 +4,9 @@ var util = require('util');
 var Undertaker = require('undertaker');
 var vfs = require('vinyl-fs');
 var watch = require('glob-watcher');
-var Crawler = require("crawler");
-var jsdom = require('jsdom');
 const Nightmare = require('nightmare')
 var cheerio=require("cheerio");
 var fs = require('fs');
-var r=require("request");
 
 
 const neo4j = require('neo4j-driver').v1;
