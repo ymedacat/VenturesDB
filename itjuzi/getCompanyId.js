@@ -1,5 +1,3 @@
-'use strict';
-
 var util = require('util');
 var Undertaker = require('undertaker');
 var vfs = require('vinyl-fs');
@@ -9,7 +7,11 @@ var jsdom = require('jsdom');
 const Nightmare = require('nightmare')
 var cheerio=require("cheerio");
 var fs = require('fs');
+var sleep = require('system-sleep');
 var r=require("request");
+var runAsync = require('run-async');
+var async = require("async");
+
 
 
 const neo4j = require('neo4j-driver').v1;
@@ -17,7 +19,6 @@ var driver = neo4j.driver("bolt://localhost", neo4j.auth.basic("admin", "admin")
 
 const session = driver.session();
 
-const nightmare = Nightmare({ show:true, maxAuthRetries: 3 })
 
 function Gulp() {
   Undertaker.call(this);
@@ -61,36 +62,32 @@ Gulp.prototype.Gulp = Gulp;
 
 var inst = new Gulp();
 module.exports = inst;
+var companyid=1;
 
 
 
-var testurl="32786489";
+async.parallel([
+    function(callback) { loop(1,10000,"1-10000.txt") },
+    function(callback) { loop(10000,20000,"10000-20000.txt") },
+    function(callback) { loop(20000,30000,"20000-30000.txt") }
+], function(err, results) {
+    // optional callback
+});
 
-//var website="https://www.itjuzi.com/company/"+testurl;
-var website="https://www.mytvsuper.com/tc";
 
-  var d = new Date();
-    var curr_date = d.getDate();
-    var curr_month = d.getMonth() + 1; //Months are zero based
-    var curr_year = d.getFullYear();
+  
+
+function loop(startNum,endNum,filename){
+	
+const nightmare = Nightmare({ show:false, maxAuthRetries: 3   });
+var website="https://www.itjuzi.com/company/"+startNum;
+var d = new Date();
+var curr_date = d.getDate();
+var curr_month = d.getMonth() + 1; //Months are zero based
+var curr_year = d.getFullYear();
 
 var datestring= curr_year.toString()+curr_month.toString()+curr_date.toString();
-nightmare
-  .goto(website)
- 
-.evaluate(function(){
 
-    return document.body.innerHTML;
-
-
-}) .then(function (body) {
-    
-
-    })
-  .catch(error => {
-    console.error('Search failed:', error)
-  })
-/*
 nightmare
   .goto(website)
  .wait('.seo-important-title')
@@ -98,50 +95,26 @@ nightmare
 
     return document.body.innerHTML;
 
-
 }) .end().then(function (body) {
-    //  cheerio.load(html);
-		
-   var $ =  cheerio.load(body);
-   
-
-console.log($(".seo-important-title").attr('data-name'));
-console.log($(".introduction").text());
-
-const companyName = $(".seo-important-title").attr('data-name');
-const companyFullName = $(".seo-important-title").attr('data-fullname');
-const introduction = $(".introduction").text();
-
-const resultPromise = session.run(
-  'CREATE (a:Company {companyName: $companyName, companyFullName:$companyFullName,introduction:$introduction}) RETURN a',
-  {companyName: companyName,companyFullName: companyFullName,introduction:introduction}
-);
-
-resultPromise.then(result => {
-  session.close();
-
-  const singleRecord = result.records[0];
-  const node = singleRecord.get(0);
-
-  console.log(node.properties.companyName);
- console.log(node.properties.companyFullName);
- console.log(node.properties.introduction);
-  // on application exit:
-  driver.close();
+    //  cheerio.load(html);	
+fs.appendFile(filename, '\n '+startNum, function (err) {
+  if (err) throw err;
+  console.log('Saved!');
+  
 });
-
-		
-fs.writeFile("./sitelog/"+testurl+datestring+".txt",body , function(err) {
-    if(err) {
-        return console.log(err);
-    }
-
-    console.log("The file was saved!");
-}); 
-		
+if (startNum<endNum){	
+startNum++;
+loop(startNum,endNum,filename);
+}
 
     })
   .catch(error => {
     console.error('Search failed:', error)
+if (startNum<endNum){
+startNum++;	
+loop(startNum,endNum,filename);
+}
   })
-*/
+
+}
+  
