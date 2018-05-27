@@ -1,7 +1,0 @@
-CREATE (n:City {name:'日本'})
-CREATE (n:City {name:'北京、上海、无锡、广州'})
-CREATE (n:City {name:'江苏'})
-CREATE (n:City {name:'昆明'})
-CREATE (n:City {name:'贵阳'})
-CREATE (n:City {name:'温州'})
-CREATE (n:City {name:'新疆'})
