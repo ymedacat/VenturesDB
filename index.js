@@ -17,11 +17,6 @@ var driver = neo4j.driver("bolt://localhost", neo4j.auth.basic("admin", "admin")
 
 const session = driver.session();
 
-
-
- 
-
-
 const nightmare = Nightmare({ show:true, maxAuthRetries: 3 })
 
 function Gulp() {
@@ -71,8 +66,8 @@ module.exports = inst;
 
 var testurl="32786489";
 
-var website="https://www.itjuzi.com/company/"+testurl;
-
+//var website="https://www.itjuzi.com/company/"+testurl;
+var website="https://www.mytvsuper.com/tc";
 
   var d = new Date();
     var curr_date = d.getDate();
@@ -80,8 +75,22 @@ var website="https://www.itjuzi.com/company/"+testurl;
     var curr_year = d.getFullYear();
 
 var datestring= curr_year.toString()+curr_month.toString()+curr_date.toString();
+nightmare
+  .goto(website)
+ 
+.evaluate(function(){
+
+    return document.body.innerHTML;
 
 
+}) .then(function (body) {
+    
+
+    })
+  .catch(error => {
+    console.error('Search failed:', error)
+  })
+/*
 nightmare
   .goto(website)
  .wait('.seo-important-title')
@@ -135,4 +144,4 @@ fs.writeFile("./sitelog/"+testurl+datestring+".txt",body , function(err) {
   .catch(error => {
     console.error('Search failed:', error)
   })
-
+*/
